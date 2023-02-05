@@ -34,7 +34,7 @@ export class CommentService {
   async createComment(commentDto) {
 
     if (!commentDto.rate || (commentDto.rate < 1 || commentDto.rate > 5)) {
-      throw new BadRequestException("Inavlid rate");
+      throw new BadRequestException("Inavlid rate ");
     }
     
     if (!commentDto.title) {

@@ -35,7 +35,7 @@ let CommentService = class CommentService {
     }
     async createComment(commentDto) {
         if (!commentDto.rate || (commentDto.rate < 1 || commentDto.rate > 5)) {
-            throw new exceptions_1.BadRequestException("Inavlid rate");
+            throw new exceptions_1.BadRequestException("Inavlid rate ");
         }
         if (!commentDto.title) {
             throw new exceptions_1.BadRequestException("Inavlid title");
