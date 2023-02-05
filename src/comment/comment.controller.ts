@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, Delete, Query, ParseIntPipe } from '@nestjs/common';
-import { CommentDto } from 'src/dto/comment.dto';
+import { CreateCommentDto } from 'src/dto/comment.dto';
 import { CommentService } from './comment.service';
 
 @Controller('/comments')
@@ -12,8 +12,8 @@ export class CommentController {
   }
 
   @Post()
-  createComment(@Body() comment: CommentDto) {
-    return this.CommentService.postComment(comment);
+  createComment(@Body() comment: CreateCommentDto) {
+    return this.CommentService.createComment(comment);
   }
   // @Get('/:id')
   // getOne(@Param('id') id: number) {

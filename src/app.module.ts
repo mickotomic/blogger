@@ -14,7 +14,7 @@ import { commentModule } from './comment/comment.module';
     password: '',
     database: 'bloging',
     entities: ['./dist/entity/*.entity.js'],
-    synchronize: true,
+    synchronize: false,
     migrations: ['./dist/migrations/*.js'],
     autoLoadEntities: true
   }), UserModule, 
