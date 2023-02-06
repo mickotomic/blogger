@@ -1,5 +1,5 @@
 import { Exclude } from 'class-transformer';
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToMany } from 'typeorm';
 import { ExclusionMetadata } from 'typeorm/metadata/ExclusionMetadata';
 import { Post } from './posts.entity';
 import { Comment } from './comment.entity';

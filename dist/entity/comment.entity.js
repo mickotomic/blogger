@@ -20,11 +20,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Comment.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => posts_entity_1.Post, (post) => post.comments),
+    (0, typeorm_1.ManyToOne)(() => posts_entity_1.Post, (post) => post.comments),
     __metadata("design:type", posts_entity_1.Post)
 ], Comment.prototype, "post", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => user_entity_1.User, (user) => user.comments),
+    (0, typeorm_1.ManyToOne)(() => user_entity_1.User, (user) => user.comments),
     __metadata("design:type", user_entity_1.User)
 ], Comment.prototype, "user", void 0);
 __decorate([

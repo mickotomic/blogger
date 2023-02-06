@@ -58,10 +58,15 @@ export class CommentService {
   }
 
   async approveComment(id: number) {
-    const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post"] });
+    const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post", "user"] });
+    
     if (!coment) {
       throw new BadRequestException("Comment not found");
     }
+    
+    // if (coment.isApproved === true) { 
+    //   throw new BadRequestException("Comment already approved");
+    // }
     const post = await this.postRepository.findOne({ where: { id }, relations: ["stats"] });
     post.stats.averageRate *= post.stats.totalCommentsOnPost;
     post.stats.averageRate += coment.rate;
@@ -76,38 +81,13 @@ export class CommentService {
     await this.statsRepository.update({ id: post.stats.id }, {
       averageRate: post.stats.averageRate
       , userComents: post.stats.userComents, totalCommentsOnPost: post.stats.totalCommentsOnPost
-    , comentsFromAnyone: post.stats.comentsFromAnyone});
-    return await this.commentRepository.update({ id }, { isApproved: true });
+      , comentsFromAnyone: post.stats.comentsFromAnyone
+    });
+     
+      return await this.commentRepository.update({ id }, { isApproved: true });
+    
   }
 }
-//   async postComment(comment: CreateCommentDto) {
-//     const post = await this.PostRepository.findOneBy({ id: comment.post });
-//     if (!comment.user) {
-//       const newComment = await this.CommentRepository.save({
-//         email: comment.email, name: comment.name, title: comment.title,
-//         content: comment.content, posts: post, rate: comment.rate
-//       });
-//       return newComment;
-//     } else {
-//       const newUserID = await this.UserRepository.findOneBy({ id: comment.user })
-//       return await this.CommentRepository.save({ posts: post, user: newUserID, title: comment.title, content: comment.content, rate: comment.rate });
-//     }
-//   }
-// }
-  //   async updatePost(id: number, post: PostsDto) {
-  //     if (await this.postRepository.findOneBy({ id })) {
-  //       return await this.postRepository.update({ id }, post);
-  //     }
-  //     throw new NotFoundException("Post not found");
-  //   }
-    
 
-  //   async deletePost(id: number) {
-  //     if (await this.postRepository.findOneBy({ id })) {
-  //       return await this.postRepository.delete({ id });
-  //     }
-  //     throw new NotFoundException("Post not found");
-  //   }
-  
 
  

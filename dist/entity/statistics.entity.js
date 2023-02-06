@@ -40,6 +40,7 @@ __decorate([
 ], Stats.prototype, "comentsFromAnyone", void 0);
 __decorate([
     (0, typeorm_1.OneToOne)(() => posts_entity_1.Post, (post) => post.stats),
+    (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", posts_entity_1.Post)
 ], Stats.prototype, "post", void 0);
 Stats = __decorate([

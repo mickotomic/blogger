@@ -47,7 +47,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "getAll", null);
 __decorate([
-    (0, common_1.Get)('/:id'),
+    (0, common_1.Get)('/:id/getOnePost'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

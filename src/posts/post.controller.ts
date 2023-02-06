@@ -12,8 +12,8 @@ export class PostController {
   getAll() {
     return this.PostService.getPost();
   }
-
-  @Get('/:id')
+  
+  @Get('/:id/getOnePost')
   getOne(@Param('id') id: number) {
     return this.PostService.getOne(+id);
   }

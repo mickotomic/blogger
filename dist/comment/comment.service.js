@@ -45,7 +45,7 @@ let CommentService = class CommentService {
         return await this.commentRepository.save(commentDto);
     }
     async approveComment(id) {
-        const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post"] });
+        const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post", "user"] });
         if (!coment) {
             throw new exceptions_1.BadRequestException("Comment not found");
         }

@@ -5,6 +5,7 @@ import {
   ManyToOne,
   OneToMany,
   OneToOne,
+  JoinColumn,
 } from 'typeorm';
 import { Post } from './posts.entity';
 
@@ -29,5 +30,6 @@ export class Stats {
   comentsFromAnyone: number;
 
   @OneToOne(() => Post, (post) => post.stats)
+  @JoinColumn()
   post: Post;
 }
