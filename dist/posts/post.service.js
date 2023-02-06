@@ -19,10 +19,12 @@ const typeorm_2 = require("typeorm");
 const posts_entity_1 = require("../entity/posts.entity");
 const exceptions_1 = require("@nestjs/common/exceptions");
 const user_entity_1 = require("../entity/user.entity");
+const statistics_entity_1 = require("../entity/statistics.entity");
 let PostService = class PostService {
-    constructor(postRepository, userRepository) {
+    constructor(postRepository, userRepository, statsRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.statsRepository = statsRepository;
     }
     async getPost() {
         const [data, count] = await this.postRepository.findAndCount();
@@ -31,6 +33,7 @@ let PostService = class PostService {
     async getOne(id) {
         const findOne = await this.postRepository.findOneBy({ id });
         if (findOne) {
+            this.views(id);
             return findOne;
         }
         else {
@@ -39,12 +42,18 @@ let PostService = class PostService {
     }
     async createPost(post) {
         const findUserId = await this.userRepository.findOneBy({ id: post.userId });
-        const newPost = await this.postRepository.save(Object.assign(Object.assign({}, post), { user: findUserId }));
-        if (newPost) {
-            return newPost;
+        if (findUserId) {
+            const stats = await this.statsRepository.save({});
+            const newPost = await this.postRepository.save(Object.assign(Object.assign({}, post), { user: findUserId, stats: stats }));
+            if (newPost) {
+                return newPost;
+            }
+            else {
+                throw new exceptions_1.BadRequestException("Post not created");
+            }
         }
         else {
-            throw new exceptions_1.BadRequestException("Post not created");
+            throw new exceptions_1.BadRequestException("User not found");
         }
     }
     async updatePost(id, post) {
@@ -59,12 +68,24 @@ let PostService = class PostService {
         }
         throw new exceptions_1.NotFoundException("Post not found");
     }
+    async views(id) {
+        const findOne = await this.postRepository.findOne({ where: { id }, relations: ['stats'] });
+        if (findOne) {
+            findOne.stats.wievs++;
+        }
+        this.statsRepository.update({ id: findOne.stats.id }, { wievs: findOne.stats.wievs });
+    }
+    async getStats(id) {
+        return await this.postRepository.findOne({ where: { id }, relations: ['stats'] });
+    }
 };
 PostService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(posts_entity_1.Post)),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
+    __param(2, (0, typeorm_1.InjectRepository)(statistics_entity_1.Stats)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository])
 ], PostService);
 exports.PostService = PostService;

@@ -14,6 +14,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommentController = void 0;
 const common_1 = require("@nestjs/common");
+const decorators_1 = require("@nestjs/common/decorators");
+const swagger_1 = require("@nestjs/swagger");
 const comment_dto_1 = require("../dto/comment.dto");
 const comment_service_1 = require("./comment.service");
 let CommentController = class CommentController {
@@ -25,6 +27,9 @@ let CommentController = class CommentController {
     }
     createComment(comment) {
         return this.CommentService.createComment(comment);
+    }
+    async updateComment(id) {
+        return await this.CommentService.approveComment(id);
     }
 };
 __decorate([
@@ -42,7 +47,15 @@ __decorate([
     __metadata("design:paramtypes", [comment_dto_1.CreateCommentDto]),
     __metadata("design:returntype", void 0)
 ], CommentController.prototype, "createComment", null);
+__decorate([
+    (0, decorators_1.Patch)("/:id"),
+    __param(0, (0, common_1.Param)("id", common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], CommentController.prototype, "updateComment", null);
 CommentController = __decorate([
+    (0, swagger_1.ApiTags)("comment"),
     (0, common_1.Controller)('/comments'),
     __metadata("design:paramtypes", [comment_service_1.CommentService])
 ], CommentController);

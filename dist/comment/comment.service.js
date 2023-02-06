@@ -20,11 +20,13 @@ const posts_entity_1 = require("../entity/posts.entity");
 const exceptions_1 = require("@nestjs/common/exceptions");
 const user_entity_1 = require("../entity/user.entity");
 const comment_entity_1 = require("../entity/comment.entity");
+const statistics_entity_1 = require("../entity/statistics.entity");
 let CommentService = class CommentService {
-    constructor(commentRepository, UserRepository, postRepository) {
+    constructor(commentRepository, UserRepository, postRepository, statsRepository) {
         this.commentRepository = commentRepository;
         this.UserRepository = UserRepository;
         this.postRepository = postRepository;
+        this.statsRepository = statsRepository;
     }
     async getComments(page, pageLimit) {
         const [data, count] = await this.commentRepository.findAndCount({
@@ -40,11 +42,30 @@ let CommentService = class CommentService {
         if (!commentDto.title) {
             throw new exceptions_1.BadRequestException("Inavlid title");
         }
-        const post = await this.postRepository.findOneBy({ id: commentDto.post });
-        if (!post) {
-            throw new exceptions_1.NotFoundException("Post not found");
-        }
         return await this.commentRepository.save(commentDto);
+    }
+    async approveComment(id) {
+        const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post"] });
+        if (!coment) {
+            throw new exceptions_1.BadRequestException("Comment not found");
+        }
+        const post = await this.postRepository.findOne({ where: { id }, relations: ["stats"] });
+        post.stats.averageRate *= post.stats.totalCommentsOnPost;
+        post.stats.averageRate += coment.rate;
+        post.stats.totalCommentsOnPost++;
+        post.stats.averageRate /= post.stats.totalCommentsOnPost;
+        if (coment.user) {
+            post.stats.userComents++;
+        }
+        else {
+            post.stats.comentsFromAnyone++;
+        }
+        await this.statsRepository.update({ id: post.stats.id }, {
+            averageRate: post.stats.averageRate,
+            userComents: post.stats.userComents, totalCommentsOnPost: post.stats.totalCommentsOnPost,
+            comentsFromAnyone: post.stats.comentsFromAnyone
+        });
+        return await this.commentRepository.update({ id }, { isApproved: true });
     }
 };
 CommentService = __decorate([
@@ -52,7 +73,9 @@ CommentService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(comment_entity_1.Comment)),
     __param(1, (0, typeorm_1.InjectRepository)(user_entity_1.User)),
     __param(2, (0, typeorm_1.InjectRepository)(posts_entity_1.Post)),
+    __param(3, (0, typeorm_1.InjectRepository)(statistics_entity_1.Stats)),
     __metadata("design:paramtypes", [typeorm_2.Repository,
+        typeorm_2.Repository,
         typeorm_2.Repository,
         typeorm_2.Repository])
 ], CommentService);

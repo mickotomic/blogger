@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Post = void 0;
 const typeorm_1 = require("typeorm");
 const comment_entity_1 = require("./comment.entity");
+const statistics_entity_1 = require("./statistics.entity");
 const user_entity_1 = require("./user.entity");
 let Post = class Post {
 };
@@ -35,6 +36,11 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => comment_entity_1.Comment, (coment) => coment.post),
     __metadata("design:type", Array)
 ], Post.prototype, "comments", void 0);
+__decorate([
+    (0, typeorm_1.OneToOne)(() => statistics_entity_1.Stats, (stats) => stats.post),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", statistics_entity_1.Stats)
+], Post.prototype, "stats", void 0);
 Post = __decorate([
     (0, typeorm_1.Entity)({ name: "test" })
 ], Post);

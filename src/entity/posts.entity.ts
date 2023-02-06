@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany, JoinColumn, OneToOne } from 'typeorm';
 import { Comment } from './comment.entity';
+import { Stats } from './statistics.entity';
 import { User } from './user.entity';
 
 
@@ -19,5 +20,8 @@ export class Post {
 
   @OneToMany(() => Comment, (coment) => coment.post)
   comments: Comment[];
-  stats: any;
+
+  @OneToOne(() => Stats, (stats) => stats.post)
+  @JoinColumn()
+  stats: Stats;
 }

@@ -7,5 +7,6 @@ export declare class CommentController {
         data: import("../entity/comment.entity").Comment[];
         count: number;
     }>;
-    createComment(comment: CreateCommentDto): Promise<any>;
+    createComment(comment: CreateCommentDto): Promise<CreateCommentDto & import("../entity/comment.entity").Comment>;
+    updateComment(id: number): Promise<import("typeorm").UpdateResult>;
 }

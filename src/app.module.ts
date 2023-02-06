@@ -12,9 +12,9 @@ import { commentModule } from './comment/comment.module';
     port: 3306,
     username: 'root',
     password: '',
-    database: 'bloging',
+    database: 'blogger',
     entities: ['./dist/entity/*.entity.js'],
-    synchronize: false,
+    synchronize: true,
     migrations: ['./dist/migrations/*.js'],
     autoLoadEntities: true
   }), UserModule, 

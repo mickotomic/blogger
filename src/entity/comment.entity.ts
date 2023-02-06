@@ -5,7 +5,7 @@ import { User } from './user.entity';
 
 
 
-@Entity({name: "commentB"})
+@Entity({name: "comment"})
 export class Comment {
   @PrimaryGeneratedColumn()
     id: number;

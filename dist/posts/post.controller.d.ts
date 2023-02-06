@@ -8,8 +8,10 @@ export declare class PostController {
         count: number;
     }>;
     getOne(id: number): Promise<import("../entity/posts.entity").Post>;
+    statistics(id: number): Promise<import("../entity/posts.entity").Post>;
     newElement(body: PostsDto): Promise<{
         user: import("../entity/user.entity").User;
+        stats: import("../entity/statistics.entity").Stats;
         title: string;
         content: string;
         userId: number;

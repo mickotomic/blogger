@@ -1,8 +1,18 @@
+import { ApiProperty } from "@nestjs/swagger"
+import { IsNumber, IsString } from "class-validator"
+
 export class PostsDto 
 	{
-		
-		title: string
-		content: string
-		userId: number
+	@ApiProperty()
+	@IsString()
+	title: string
+
+	@ApiProperty()
+	@IsString()
+	content: string
+
+	@ApiProperty()
+	@IsNumber()
+	userId: number
 	}
 

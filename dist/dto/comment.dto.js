@@ -11,36 +11,46 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateCommentDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const class_validator_1 = require("class-validator");
 const posts_entity_1 = require("../entity/posts.entity");
 const user_entity_1 = require("../entity/user.entity");
 class CreateCommentDto {
 }
 __decorate([
     (0, swagger_1.ApiProperty)({ type: Number }),
+    (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", posts_entity_1.Post)
 ], CreateCommentDto.prototype, "post", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ type: Number }),
+    (0, class_validator_1.IsOptional)(),
     __metadata("design:type", user_entity_1.User)
 ], CreateCommentDto.prototype, "user", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "title", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "content", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], CreateCommentDto.prototype, "email", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)(),
+    (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)
 ], CreateCommentDto.prototype, "rate", void 0);
 exports.CreateCommentDto = CreateCommentDto;

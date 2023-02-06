@@ -60,7 +60,7 @@ __decorate([
     __metadata("design:type", Date)
 ], Comment.prototype, "updatedAt", void 0);
 Comment = __decorate([
-    (0, typeorm_1.Entity)({ name: "commentB" })
+    (0, typeorm_1.Entity)({ name: "comment" })
 ], Comment);
 exports.Comment = Comment;
 //# sourceMappingURL=comment.entity.js.map

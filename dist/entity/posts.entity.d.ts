@@ -1,4 +1,5 @@
 import { Comment } from './comment.entity';
+import { Stats } from './statistics.entity';
 import { User } from './user.entity';
 export declare class Post {
     id: number;
@@ -6,5 +7,5 @@ export declare class Post {
     content: string;
     user: User;
     comments: Comment[];
-    stats: any;
+    stats: Stats;
 }

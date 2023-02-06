@@ -14,6 +14,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PostController = void 0;
 const common_1 = require("@nestjs/common");
+const swagger_1 = require("@nestjs/swagger");
 const posts_dto_1 = require("../dto/posts.dto");
 const post_service_1 = require("./post.service");
 let PostController = class PostController {
@@ -25,6 +26,9 @@ let PostController = class PostController {
     }
     getOne(id) {
         return this.PostService.getOne(+id);
+    }
+    statistics(id) {
+        return this.PostService.getStats(+id);
     }
     newElement(body) {
         return this.PostService.createPost(body);
@@ -50,6 +54,13 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "getOne", null);
 __decorate([
+    (0, common_1.Get)('/:id/stats'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", void 0)
+], PostController.prototype, "statistics", null);
+__decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -72,6 +83,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PostController.prototype, "delete", null);
 PostController = __decorate([
+    (0, swagger_1.ApiTags)("posts"),
     (0, common_1.Controller)('/posts'),
     __metadata("design:paramtypes", [post_service_1.PostService])
 ], PostController);
