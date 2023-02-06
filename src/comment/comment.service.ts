@@ -10,6 +10,7 @@ import { UserDto } from 'src/dto/user.dto';
 import { User } from 'src/entity/user.entity';
 import { CreateCommentDto } from 'src/dto/comment.dto';
 import { Comment } from 'src/entity/comment.entity';
+import { Stats } from 'src/entity/statistics.entity';
 
 @Injectable()
 export class CommentService {
@@ -21,7 +22,9 @@ export class CommentService {
     @InjectRepository(User)
     private UserRepository: Repository<User>,
     @InjectRepository(Post)
-    private postRepository: Repository<Post>
+    private postRepository: Repository<Post>,
+    @InjectRepository(Stats)
+    private statsRepository: Repository<Stats>
   ) { }
 
   async getComments(page, pageLimit): Promise<{ data: Comment[], count: number }> {
@@ -31,7 +34,7 @@ export class CommentService {
     });
     return { data, count };
   }
-  async createComment(commentDto) {
+  async createComment(commentDto: CreateCommentDto) {
 
     if (!commentDto.rate || (commentDto.rate < 1 || commentDto.rate > 5)) {
       throw new BadRequestException("Inavlid rate ");
@@ -41,13 +44,40 @@ export class CommentService {
       throw new BadRequestException("Inavlid title");
     }
     
-    const post = await this.postRepository.findOneBy({ id: commentDto.post });
+    // const post = await this.postRepository.findOneBy({ id: commentDto.post });
     
-    if (!post) {
-      throw new NotFoundException("Post not found");
-    }
-    
+    // if (!post) {
+    //   throw new NotFoundException("Post not found");
+    // }
+    // if (commentDto.user) {
+    //   const user = await this.UserRepository.findOne({ where: { id: commentDto.user } })
+    // }
     return await this.commentRepository.save(commentDto);
+
+
+  }
+
+  async approveComment(id: number) {
+    const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post"] });
+    if (!coment) {
+      throw new BadRequestException("Comment not found");
+    }
+    const post = await this.postRepository.findOne({ where: { id }, relations: ["stats"] });
+    post.stats.averageRate *= post.stats.totalCommentsOnPost;
+    post.stats.averageRate += coment.rate;
+    post.stats.totalCommentsOnPost++;
+    post.stats.averageRate /= post.stats.totalCommentsOnPost;
+
+    if (coment.user) {
+      post.stats.userComents++;
+    } else {
+      post.stats.comentsFromAnyone++;
+    }
+    await this.statsRepository.update({ id: post.stats.id }, {
+      averageRate: post.stats.averageRate
+      , userComents: post.stats.userComents, totalCommentsOnPost: post.stats.totalCommentsOnPost
+    , comentsFromAnyone: post.stats.comentsFromAnyone});
+    return await this.commentRepository.update({ id }, { isApproved: true });
   }
 }
 //   async postComment(comment: CreateCommentDto) {
