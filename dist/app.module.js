@@ -35,7 +35,7 @@ AppModule = __decorate([
                 migrations: ['./dist/migrations/*.js'],
                 autoLoadEntities: true
             }), user_module_1.UserModule,
-            comment_module_1.commentModule
+            comment_module_1.commentModule,
         ],
         controllers: [],
         providers: [],

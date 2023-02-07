@@ -31,7 +31,7 @@ let CommentService = class CommentService {
     async getComments(page, pageLimit) {
         const [data, count] = await this.commentRepository.findAndCount({
             where: { isApproved: true },
-            take: pageLimit, skip: (page - 1) * pageLimit
+            take: pageLimit, skip: (page - 1) * pageLimit, relations: ["user"]
         });
         return { data, count };
     }
@@ -52,19 +52,19 @@ let CommentService = class CommentService {
         return await this.commentRepository.save(commentDto);
     }
     async approveComment(id) {
-        const coment = await this.commentRepository.findOne({ where: { id }, relations: ["post", "user"] });
-        if (!coment) {
+        const comment = await this.commentRepository.findOne({ where: { id }, relations: ["post", "user"] });
+        if (!comment) {
             throw new exceptions_1.BadRequestException("Comment not found");
         }
-        if (coment.isApproved === true) {
+        if (comment.isApproved === true) {
             throw new exceptions_1.BadRequestException("Comment already approved");
         }
-        const post = await this.postRepository.findOne({ where: { id: coment.post.id }, relations: ["stats"] });
+        const post = await this.postRepository.findOne({ where: { id: comment.post.id }, relations: ["stats"] });
         post.stats.averageRate *= post.stats.totalCommentsOnPost;
-        post.stats.averageRate += coment.rate;
+        post.stats.averageRate += comment.rate;
         post.stats.totalCommentsOnPost++;
         post.stats.averageRate /= post.stats.totalCommentsOnPost;
-        if (coment.user) {
+        if (comment.user) {
             post.stats.userComents++;
         }
         else {
@@ -75,7 +75,7 @@ let CommentService = class CommentService {
             userComents: post.stats.userComents, totalCommentsOnPost: post.stats.totalCommentsOnPost,
             comentsFromAnyone: post.stats.comentsFromAnyone
         });
-        return await this.commentRepository.update({ id }, { isApproved: true });
+        return await this.commentRepository.update({ id }, { isApproved: !comment.isApproved });
     }
 };
 CommentService = __decorate([

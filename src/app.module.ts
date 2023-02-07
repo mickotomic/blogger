@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { UserModule } from './user/user.module';
 import { commentModule } from './comment/comment.module';
+import { PostStatisticsModule } from './statistics/postStatistics.module';
 @Module({
 
   imports: [PostModule, TypeOrmModule.forRoot({
@@ -18,8 +19,8 @@ import { commentModule } from './comment/comment.module';
     migrations: ['./dist/migrations/*.js'],
     autoLoadEntities: true
   }), UserModule, 
-    commentModule
-  ],
+    commentModule,
+    ],
   controllers: [],
   providers: [],
 })
