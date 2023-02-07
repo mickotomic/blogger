@@ -33,7 +33,7 @@ let CommentController = class CommentController {
     }
 };
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)("/:id/getComments"),
     __param(0, (0, common_1.Query)('page', common_1.ParseIntPipe)),
     __param(1, (0, common_1.Query)('pageLimit', common_1.ParseIntPipe)),
     __metadata("design:type", Function),

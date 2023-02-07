@@ -9,7 +9,7 @@ import { CommentService } from './comment.service';
 export class CommentController {
   constructor(private readonly CommentService: CommentService) { }
 
-  @Get()
+  @Get("/:id/getComments")
   getAll(@Query('page', ParseIntPipe) page: number, @Query('pageLimit', ParseIntPipe) pageLimit: number) {
     return this.CommentService.getComments(page, pageLimit);
   }
