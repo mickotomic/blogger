@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { Post } from 'src/entity/posts.entity';
 import { User } from 'src/entity/user.entity';
-import { CreateCommentDto } from 'src/dto/comment.dto';
 import { Comment } from 'src/entity/comment.entity';
 import { Stats } from 'src/entity/statistics.entity';
 export declare class CommentService {
@@ -14,6 +13,6 @@ export declare class CommentService {
         data: Comment[];
         count: number;
     }>;
-    createComment(commentDto: CreateCommentDto): Promise<CreateCommentDto & Comment>;
+    createComment(commentDto: any): Promise<any>;
     approveComment(id: number): Promise<import("typeorm").UpdateResult>;
 }

@@ -7,7 +7,7 @@ import { User } from './user.entity';
 
 @Entity({name: "comment"})
 export class Comment {
-  @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn()
     id: number;
   
     @ManyToOne(() => Post, (post) => post.comments)

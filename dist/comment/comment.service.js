@@ -42,6 +42,13 @@ let CommentService = class CommentService {
         if (!commentDto.title) {
             throw new exceptions_1.BadRequestException("Inavlid title");
         }
+        const post = await this.postRepository.findOneBy({ id: commentDto.post });
+        if (!post) {
+            throw new exceptions_1.NotFoundException("Post not found");
+        }
+        if (commentDto.user) {
+            const user = await this.UserRepository.findOne({ where: { id: commentDto.user } });
+        }
         return await this.commentRepository.save(commentDto);
     }
     async approveComment(id) {
@@ -49,7 +56,10 @@ let CommentService = class CommentService {
         if (!coment) {
             throw new exceptions_1.BadRequestException("Comment not found");
         }
-        const post = await this.postRepository.findOne({ where: { id }, relations: ["stats"] });
+        if (coment.isApproved === true) {
+            throw new exceptions_1.BadRequestException("Comment already approved");
+        }
+        const post = await this.postRepository.findOne({ where: { id: coment.post.id }, relations: ["stats"] });
         post.stats.averageRate *= post.stats.totalCommentsOnPost;
         post.stats.averageRate += coment.rate;
         post.stats.totalCommentsOnPost++;
