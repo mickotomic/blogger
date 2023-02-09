@@ -13,6 +13,10 @@ import { Post } from './posts.entity';
 export class Stats {
   @PrimaryGeneratedColumn()
   id: number;
+  
+  @OneToOne(() => Post, (post) => post.stats)
+  @JoinColumn()
+  post: Post;
 
   @Column({ type: 'int', default: 0 })
   wievs: number;
@@ -29,7 +33,5 @@ export class Stats {
   @Column({ type: 'int', default: 0 })
   comentsFromAnyone: number;
 
-  @OneToOne(() => Post, (post) => post.stats)
-  @JoinColumn()
-  post: Post;
+ 
 }
