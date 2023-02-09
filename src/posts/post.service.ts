@@ -40,24 +40,17 @@ export class PostService {
   }
     
 
-  async createPost(post: PostsDto) {
+  async createPost(post: PostsDto): Promise<Post> {
     
-    const findUserId = await this.userRepository.findOneBy({ id: post.userId });
-    if (findUserId) {
-      const stats = await this.statsRepository.save({});
-    
-      const newPost = await this.postRepository.save({ ...post, user: findUserId, stats: stats });
-    
-      if (newPost) {
-
-        return newPost;
-      } else {
-        throw new BadRequestException("Post not created");
-      }
-    } else { 
+    const findUserId = await this.userRepository.findOneBy({ id: post.userId});
+    if (!findUserId) { 
       throw new BadRequestException("User not found");
     }
-  }
+      const newPost = await this.postRepository.save({ findUserId, ...post});
+      await this.statsRepository.save({ post: newPost });
+      return newPost;
+      
+    }
 
   async updatePost(id: number, post: PostsDto) {
     if (await this.postRepository.findOneBy({ id })) {

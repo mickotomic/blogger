@@ -13,13 +13,7 @@ export declare class PostService {
         count: number;
     }>;
     getOne(id: number): Promise<Post>;
-    createPost(post: PostsDto): Promise<{
-        user: User;
-        stats: Stats;
-        title: string;
-        content: string;
-        userId: number;
-    } & Post>;
+    createPost(post: PostsDto): Promise<Post>;
     updatePost(id: number, post: PostsDto): Promise<import("typeorm").UpdateResult>;
     deletePost(id: number): Promise<import("typeorm").DeleteResult>;
     views(id: number): Promise<void>;

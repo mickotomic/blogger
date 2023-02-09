@@ -42,19 +42,12 @@ let PostService = class PostService {
     }
     async createPost(post) {
         const findUserId = await this.userRepository.findOneBy({ id: post.userId });
-        if (findUserId) {
-            const stats = await this.statsRepository.save({});
-            const newPost = await this.postRepository.save(Object.assign(Object.assign({}, post), { user: findUserId, stats: stats }));
-            if (newPost) {
-                return newPost;
-            }
-            else {
-                throw new exceptions_1.BadRequestException("Post not created");
-            }
-        }
-        else {
+        if (!findUserId) {
             throw new exceptions_1.BadRequestException("User not found");
         }
+        const newPost = await this.postRepository.save(Object.assign({ findUserId }, post));
+        await this.statsRepository.save({ post: newPost });
+        return newPost;
     }
     async updatePost(id, post) {
         if (await this.postRepository.findOneBy({ id })) {

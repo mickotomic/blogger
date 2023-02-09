@@ -9,13 +9,7 @@ export declare class PostController {
     }>;
     getOne(id: number): Promise<import("../entity/posts.entity").Post>;
     statistics(id: number): Promise<import("../entity/posts.entity").Post>;
-    newElement(body: PostsDto): Promise<{
-        user: import("../entity/user.entity").User;
-        stats: import("../entity/statistics.entity").Stats;
-        title: string;
-        content: string;
-        userId: number;
-    } & import("../entity/posts.entity").Post>;
+    newElement(body: PostsDto): Promise<import("../entity/posts.entity").Post>;
     update(id: number, body: PostsDto): Promise<import("typeorm").UpdateResult>;
     delete(id: number): Promise<import("typeorm").DeleteResult>;
 }

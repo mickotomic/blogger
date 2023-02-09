@@ -19,6 +19,11 @@ __decorate([
     __metadata("design:type", Number)
 ], Stats.prototype, "id", void 0);
 __decorate([
+    (0, typeorm_1.OneToOne)(() => posts_entity_1.Post, (post) => post.stats),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", posts_entity_1.Post)
+], Stats.prototype, "post", void 0);
+__decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 0 }),
     __metadata("design:type", Number)
 ], Stats.prototype, "wievs", void 0);
@@ -38,11 +43,6 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'int', default: 0 }),
     __metadata("design:type", Number)
 ], Stats.prototype, "comentsFromAnyone", void 0);
-__decorate([
-    (0, typeorm_1.OneToOne)(() => posts_entity_1.Post, (post) => post.stats),
-    (0, typeorm_1.JoinColumn)(),
-    __metadata("design:type", posts_entity_1.Post)
-], Stats.prototype, "post", void 0);
 Stats = __decorate([
     (0, typeorm_1.Entity)({ name: 'stats' })
 ], Stats);
